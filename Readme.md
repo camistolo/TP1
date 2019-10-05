@@ -154,21 +154,21 @@ Una vez modificados los archivos localmente, para poder subirlos a la web se deb
 
 En la siguiente imagen, se puede observar el codigo principal, que se encarga de prender un LED dependiendo de que pulsador sea precionado.
 
-![](https://github.com/camistolo/TP1/blob/master/Imagenes/sl0.JPG?raw=true)
+![](https://github.com/camistolo/TP1/blob/master/Imagenes/sl0.JPG)
 
 En primer lugar, se configuran los pines como entrada o salida a traves de la función gpioConfig. Esta función recibe la macro de la dirección de cada pin y en que estado va a estar (entrada o salida). 
 
-![](https://github.com/camistolo/TP1/blob/master/Imagenes/sl1.JPG?raw=true)
-![](https://github.com/camistolo/TP1/blob/master/Imagenes/sl2.JPG?raw=true)
-![](https://github.com/camistolo/TP1/blob/master/Imagenes/sl3.JPG?raw=true)
+![](https://github.com/camistolo/TP1/blob/master/Imagenes/sl1.jpeg?raw=true)
+![](https://github.com/camistolo/TP1/blob/master/Imagenes/sl2.jpeg?raw=true)
+![](https://github.com/camistolo/TP1/blob/master/Imagenes/sl3.jpeg?raw=true)
 
 Una vez realizada la configuración, el programa entra en el loop principal. Aquí, se lee el valor de cada entrada atraves de la función gpioRead y es guardado en la variable valor.
 
-![](https://github.com/camistolo/TP1/blob/master/Imagenes/sl4.JPG?raw=true)
+![](https://github.com/camistolo/TP1/blob/master/Imagenes/sl4.jpeg?raw=true)
 
 Por medio de la función gpioWrite, se setea la salida respecto al estado de la entrada correspondiente. La función mencionada con anterioridad recibe el nombre del pin (donde se escribirá el valor) y el estado de este (prendido o apagado).
 
-![](https://github.com/camistolo/TP1/blob/master/Imagenes/sl5.JPG?raw=true)
+![](https://github.com/camistolo/TP1/blob/master/Imagenes/sl5.jpeg?raw=true)
 
 
 ## Análisis del envío de mensajes de depuración por puerto serie c/sAPI
@@ -177,14 +177,13 @@ Por medio de la función gpioWrite, se setea la salida respecto al estado de la 
 
 En primer lugar, se observa que se hacen las inicializaciones y configuraciones correspondientes. Se utiliza la función anterior de ticks y por ende, se configura el TICKRATE mediante tickConfig y la interrupción, mediante tickCallbackSet. Previamente, se configura la placa (al igual que en cada código) y se configura el puerto serie.
 
-IMAGEN ps3
-![](https://github.com/camistolo/TP1/blob/master/Imagenes/im4.jpeg?raw=true)
+![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps3.jpeg?raw=true)
 
 
 ### debugPrintConfigUart
 
 Se configura la dirección del puerto serie y el baudrate que se le envía.
-IMAGEN ps4
+
 ![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps4.jpeg?raw=true)
 
  El puerto serie que se elige es el UART_USB, que se observa declarado a continuación:
