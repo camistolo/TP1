@@ -57,7 +57,9 @@ DEBUG_PRINT_ENABLE;
 
 #define TP1_5 (5)
 
-#define TEST (TP1_5)
+#define TEST (TP1_2)
+
+
 #define TICKRATE_1MS	(1)				/* 1000 ticks per second */
 #define TICKRATE_10MS	(10)			/* 100 ticks per second */
 #define TICKRATE_100MS	(100)			/* 10 ticks per second */
