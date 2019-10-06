@@ -262,9 +262,9 @@ La diferencia de este caso con el resto de los códigos es que la interrupción 
 
 
 
-##Sensado de Push Buttons c/sAPI
+## Sensado de Push Buttons c/sAPI
 
-###Inicializaciones
+### Inicializaciones
 
 En primer lugar se declaran los Flags que serán modificados en las interrupciones y por esa razón son declarados como volatile.
 
@@ -272,7 +272,7 @@ En primer lugar se declaran los Flags que serán modificados en las interrupcion
 
 Por otro lado, también se declara la función myTickHook, que es la que se ejecuta cada vez que se produce una interrupción. Esta función se encarga de cambiar los Flags correspondientes, uno encargado de notificar que se ejecuta un tick y el otro si el pulsador se encuentra presionado.
 
-###Configuraciones
+### Configuraciones
 
 En segundo lugar se configura tanto la placa, como el puerto serie y la función que genera los ticks al igual que en los casos anteriores.
 
@@ -283,3 +283,4 @@ En segundo lugar se configura tanto la placa, como el puerto serie y la función
 Se encuentra la función__WFI() que espera una interrupción. Luego si el Flag BUTTON_Time_Flag es verdadero, se pregunta si el Flag BUTTON_Status_Flag es verdadero (es decir que el pulsador se encontraba presionado). Si esto es asi se fija si el contador de ticks es cero. Si se cumple, se resetea el contador, se prende un led luego se cambia el led y por puerto serie se envia "LED Toggle\n"; si no es asi se decrementa el pulsador.
 
 
+![](https://github.com/camistolo/TP1/blob/master/Imagenes/6_3.PNG?raw=true)
