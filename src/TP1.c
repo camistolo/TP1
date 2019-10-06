@@ -57,11 +57,12 @@ DEBUG_PRINT_ENABLE;
 
 #define TP1_5 (5)
 
-#define TEST (TP1_2)
+#define TP1_6 (6)
 
+#define TEST (TP1_6)
 
 #define TICKRATE_1MS	(1)				/* 1000 ticks per second */
-#define TICKRATE_10MS	(10)			/* 100 ticks per second */
+#define TICKRATE_50MS	(50)			/* 100 ticks per second */
 #define TICKRATE_100MS	(100)			/* 10 ticks per second */
 #define TICKRATE_MS		(TICKRATE_1MS)	/* ¿? ticks per second */
 
@@ -71,6 +72,10 @@ DEBUG_PRINT_ENABLE;
 #define LED_TOGGLE_MS		(LED_TOGGLE_1000MS / TICKRATE_MS)
 
 
+#define BUTTON_STATUS_10MS	(10)
+#define BUTTON_STATUS_100MS	(50)
+#define BUTTON_STATUS_500MS	(100)
+#define BUTTON_STATUS_MS	(BUTTON_STATUS_500MS / TICKRATE_MS)
 
 
 /*==================[macros and definitions]=================================*/
@@ -87,6 +92,7 @@ DEBUG_PRINT_ENABLE;
 
 /*==================[external functions definition]==========================*/
 
+/* ******************************************************************************************************************************** */
 #if (TEST == TP1_1)
 
 /* FUNCION PRINCIPAL, PUNTO DE ENTRADA AL PROGRAMA LUEGO DE RESET. */
@@ -117,7 +123,7 @@ int main(void){
    return 0 ;
 }
 
-/*==================[end of file]============================================*/
+/* ******************************************************************************************************************************** */
 
 #elif (TEST == TP1_2)
 
@@ -163,7 +169,7 @@ int main(void)
    return 0 ;
 }
 
-/*==================[end of file]============================================*/
+/* ******************************************************************************************************************************** */
 
 #elif (TEST == TP1_3)
 
@@ -229,7 +235,7 @@ int main(void){
    return 0 ;
 }
 
-/*==================[end of file]============================================*/
+/* ******************************************************************************************************************************** */
 #elif (TEST == TP1_4)
 volatile bool LED_Time_Flag = false;
 
@@ -283,7 +289,7 @@ int main(void) {
 	return 0 ;
 }
 
-
+/* ******************************************************************************************************************************** */
 #elif (TEST == TP1_5)
 
 volatile bool LED_Time_Flag = false;
@@ -344,8 +350,89 @@ int main(void) {
 	return 0 ;
 }
 
+/* ******************************************************************************************************************************** */
+#elif (TEST == TP1_6)
 
 
+volatile bool LED_Time_Flag = false;
+
+volatile bool BUTTON_Status_Flag = false;
+volatile bool BUTTON_Time_Flag = false;
+
+/* FUNCION que se ejecuta cada vez que ocurre un Tick. */
+void myTickHook( void *ptr ) {
+	LED_Time_Flag = true;
+	BUTTON_Time_Flag = true;
+
+    if (!gpioRead( TEC1 ))
+		BUTTON_Status_Flag = true;
+	else
+		BUTTON_Status_Flag = false;
+
+}
+
+
+/* FUNCION PRINCIPAL, PUNTO DE ENTRADA AL PROGRAMA LUEGO DE RESET. */
+int main(void) {
+
+	/* ------------- INICIALIZACIONES ------------- */
+	uint32_t BUTTON_Status_Counter = 0;
+	uint32_t idx = LED3;
+
+	/* Inicializar la placa */
+	boardConfig();
+
+	/* UART for debug messages. */
+	debugPrintConfigUart( UART_USB, 115200 );
+	debugPrintString( "DEBUG c/sAPI\r\n" );
+
+	/* Inicializar el conteo de Ticks con resolucion de 1ms (se ejecuta
+       periodicamente una interrupcion cada TICKRATE_MS que incrementa un contador de
+       Ticks obteniendose una base de tiempos). */
+	tickConfig( TICKRATE_MS );
+
+	/* Se agrega ademas un "tick hook" nombrado myTickHook. El tick hook es
+       simplemente una funcion que se ejecutara peri�odicamente con cada
+       interrupcion de Tick, este nombre se refiere a una funcion "enganchada"
+       a una interrupcion.
+       El segundo parametro es el parametro que recibe la funcion myTickHook
+       al ejecutarse. En este ejemplo se utiliza para pasarle el led a titilar.
+	*/
+	tickCallbackSet( myTickHook, (void*)NULL );
+
+	gpioToggle(LED3);
+
+	/* ------------- REPETIR POR SIEMPRE ------------- */
+	while(1) {
+		__WFI();
+
+		if (BUTTON_Time_Flag == true) {
+			BUTTON_Time_Flag = false;
+
+			if (BUTTON_Status_Flag == true) {
+				BUTTON_Status_Flag = false;
+
+				if (BUTTON_Status_Counter == 0) {
+					BUTTON_Status_Counter = BUTTON_STATUS_MS;
+
+					gpioToggle(idx);
+
+					((idx > LEDR) ? idx-- : (idx = LED3));
+
+					gpioToggle(idx);
+					debugPrintString( "LED Toggle\n" );
+				}
+				else
+					BUTTON_Status_Counter--;
+			}
+
+		}
+	}
+
+	/* NO DEBE LLEGAR NUNCA AQUI, debido a que a este programa no es llamado
+       por ningun S.O. */
+	return 0 ;
+}
 
 
 #endif

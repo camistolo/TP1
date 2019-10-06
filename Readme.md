@@ -154,7 +154,7 @@ Una vez modificados los archivos localmente, para poder subirlos a la web se deb
 
 En la siguiente imagen, se puede observar el codigo principal, que se encarga de prender un LED dependiendo de que pulsador sea precionado.
 
-![](https://github.com/camistolo/TP1/blob/master/Imagenes/sl0.JPG)
+![](https://github.com/camistolo/TP1/blob/master/Imagenes/sl0.JPG?raw=true)
 
 En primer lugar, se configuran los pines como entrada o salida a traves de la función gpioConfig. Esta función recibe la macro de la dirección de cada pin y en que estado va a estar (entrada o salida). 
 
@@ -162,13 +162,25 @@ En primer lugar, se configuran los pines como entrada o salida a traves de la fu
 ![](https://github.com/camistolo/TP1/blob/master/Imagenes/sl2.jpeg?raw=true)
 ![](https://github.com/camistolo/TP1/blob/master/Imagenes/sl3.jpeg?raw=true)
 
-Una vez realizada la configuración, el programa entra en el loop principal. Aquí, se lee el valor de cada entrada atraves de la función gpioRead y es guardado en la variable valor.
+Una vez realizada la configuración, el programa entra en el loop principal. Aquí, se lee el valor de cada entrada atraves de la función gpioRead y es guardado en la variable valor. Las macros TEC1, TEC2, TEC3 y TEC4 corresponden a la dirección de memoria de los pulsadores respectivamente.
 
 ![](https://github.com/camistolo/TP1/blob/master/Imagenes/sl4.jpeg?raw=true)
 
 Por medio de la función gpioWrite, se setea la salida respecto al estado de la entrada correspondiente. La función mencionada con anterioridad recibe el nombre del pin (donde se escribirá el valor) y el estado de este (prendido o apagado).
 
 ![](https://github.com/camistolo/TP1/blob/master/Imagenes/sl5.jpeg?raw=true)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## Análisis del envío de mensajes de depuración por puerto serie c/sAPI
@@ -246,3 +258,28 @@ Esta función escribe en el pin correspondiente (LED3) lo contrario a lo que lee
 La diferencia de este caso con el resto de los códigos es que la interrupción simplemente cambia el valor de un Flag. Esto permite que el código sea portable y que en caso de querer cambiar lo que hace la interupción, simplemente se debe cambiar el código principal y no la interrupción en sí. El Flag LED_Time_Flag se declara volatile ya que se modifica en una interrupción y por eso, se desea que el compilador no optimice su valor, ya que si no, no podría modificarse allí. Esto se observa en la imagen a continuación:
 
 ![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps2.PNG?raw=true)
+
+
+
+
+##Sensado de Push Buttons c/sAPI
+
+###Inicializaciones
+
+En primer lugar se declaran los Flags que serán modificados en las interrupciones y por esa razón son declarados como volatile.
+
+![](https://github.com/camistolo/TP1/blob/master/Imagenes/6_1.PNG?raw=true)
+
+Por otro lado, también se declara la función myTickHook, que es la que se ejecuta cada vez que se produce una interrupción. Esta función se encarga de cambiar los Flags correspondientes, uno encargado de notificar que se ejecuta un tick y el otro si el pulsador se encuentra presionado.
+
+###Configuraciones
+
+En segundo lugar se configura tanto la placa, como el puerto serie y la función que genera los ticks al igual que en los casos anteriores.
+
+![](https://github.com/camistolo/TP1/blob/master/Imagenes/6_2.PNG?raw=true)
+
+### Loop
+
+Se encuentra la función__WFI() que espera una interrupción. Luego si el Flag BUTTON_Time_Flag es verdadero, se pregunta si el Flag BUTTON_Status_Flag es verdadero (es decir que el pulsador se encontraba presionado). Si esto es asi se fija si el contador de ticks es cero. Si se cumple, se resetea el contador, se prende un led luego se cambia el led y por puerto serie se envia "LED Toggle\n"; si no es asi se decrementa el pulsador.
+
+
