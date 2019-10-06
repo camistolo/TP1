@@ -177,72 +177,72 @@ Por medio de la función gpioWrite, se setea la salida respecto al estado de la 
 
 En primer lugar, se observa que se hacen las inicializaciones y configuraciones correspondientes. Se utiliza la función anterior de ticks y por ende, se configura el TICKRATE mediante tickConfig y la interrupción, mediante tickCallbackSet. Previamente, se configura la placa (al igual que en cada código) y se configura el puerto serie.
 
-![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps3.jpeg?raw=true)
+![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps3.PNG?raw=true)
 
 
 ### debugPrintConfigUart
 
 Se configura la dirección del puerto serie y el baudrate que se le envía.
 
-![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps4.jpeg?raw=true)
+![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps4.PNG?raw=true)
 
  El puerto serie que se elige es el UART_USB, que se observa declarado a continuación:
 
-![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps5.jpeg?raw=true)
+![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps5.PNG?raw=true)
 
 Se enumeran todos los puertos series posibles y se aclara a que pines corresponden, con lo cual se puede ver en la placa donde podría conectarse para funcionar como puerto serie.
 
 ### debugPrintString
 
 DeLa función printString escribe la cadena que se le pasa como parámetro, con lo cual, se puede corroborar previo a realizar la función principal del código si el puerto serie funciona correctamente o no.
-![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps6.jpeg?raw=true)
+![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps6.PNG?raw=true)
 
 #### uartWriteString
 
 La función uartWriteString escribe la función byte por byte, hasta que se escribieron todos los caracteres de la cadena.
 
 
-![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps9.jpeg?raw=true)
+![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps9.PNG?raw=true)
 
 #### uartWriteByte
 
 La función uartWriteByte envía los bytes que le pasan como parámetro siempre y cuando el pin de transmisión esté disponible. Esto se chequea con la función uartTxReady.
 
 
-![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps10.jpeg?raw=true)
+![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps10.PNG?raw=true)
 
 #### uartTxReady
 
 Si hay espacio en el pin de transmisión Tx, la función uartTxReady envía un valor booleano seteado en TRUE. 
 
-![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps11.jpeg?raw=true)
+![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps11.PNG?raw=true)
 
 #### uartTxWrite
 
 Luego de chequear que el pin de transmisión está disponible, se escribe el byte en aquel pin, mediante la función Chip_UART_SendByte, que recibe la dirección del pin de transmisión correspondiente y el byte quq se desea enviar en ese momento 
 
-![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps12.jpeg?raw=true)
+![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps12.PNG?raw=true)
 
 
 ### Loop principal
 
 Una vez configurado todo, se ingresa al loop principal, donde se chequea en principio, si se llevó a cabo la interrupción, que coloca al Flag en TRUE (esta se expliacará luego).
 
-![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps7.jpeg?raw=true)
+![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps7.PNG?raw=true)
 
 Si se interrumpe el programa (el Flag se pone en True), se vuelve a poner en False para desactivarlo y se cambia el estado del led (en este caso, es el LED3) mediante la función gpioToggle:
 
-![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps8.jpeg?raw=true)
+![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps8.PNG?raw=true)
 
 Esta función escribe en el pin correspondiente (LED3) lo contrario a lo que lee. Por ende, si el led está prendido, lo apagará. De forma contraria, si el led está apagado, lo prenderá.
 
  Cuando cambia el valor del led al opuesto, también se imprime la cadena "LED Toggle". Esto se observa a continuación:
 
-![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps1.jpeg?raw=true)
+![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps1.PNG?raw=true)
 
 
 #### myTickHook
 
 La diferencia de este caso con el resto de los códigos es que la interrupción simplemente cambia el valor de un Flag. Esto permite que el código sea portable y que en caso de querer cambiar lo que hace la interupción, simplemente se debe cambiar el código principal y no la interrupción en sí. El Flag LED_Time_Flag se declara volatile ya que se modifica en una interrupción y por eso, se desea que el compilador no optimice su valor, ya que si no, no podría modificarse allí. Esto se observa en la imagen a continuación:
 
-![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps2.jpeg?raw=true)
+![](https://github.com/camistolo/TP1/blob/master/Imagenes/ps2.PNG?raw=true)
