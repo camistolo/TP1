@@ -346,3 +346,8 @@ Se encuentra la función__WFI() que espera una interrupción. Luego si el Flag B
 
 
 ![](https://github.com/camistolo/TP1/blob/master/Imagenes/6_3.PNG?raw=true)
+
+
+## Hoja de corrección
+
+![](https://github.com/camistolo/TP1/blob/master/Imagenes/hoja_de_ruta.jpeg)
