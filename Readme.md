@@ -178,49 +178,49 @@ Por medio de la función gpioWrite, se setea la salida respecto al estado de la 
 
 En tickHooks lo primero que se hace es inicializar la placa con boardConfig().
 
-![ALT](Capture10_tickHook_main.PNG)
+![ALT](https://github.com/camistolo/TP1/blob/master/Imagenes/Capture10_tickInit.PNG?raw=true)
 
 Luego se llama a tickConfig a la cual se le pasa el parametro TICKRATE_MS. tickConfig es una macro: #define tickConfig tickInit. Por lo tanto cuando se llama a tickConfig en definitiva se esta llamando a tickInit. 
 
 tickInit es la funcion que se llama pasandole TICKRATE_MS, un tipo tick_t, y devuelve un booleano (se encuentra en sapi_tick.h y .c).
 
-![ALT](Capture1_tickInit.PNG)
+![ALT](https://github.com/camistolo/TP1/blob/master/Imagenes/Capture1_tickInit.PNG?raw=true)
 
 El tipo tick_t esta definido como un uint64_t, un entero muy grande. 
 
 Metiendose en tickInit, primero valida que el TICKRATE no sea cero. Si es cero, llama a tickPowerSet pasandole un OFF. Esto lo que hace es deshabilitar el clock y la energia de los perifericos.
 
-![ALT](Capture2_tickPowerSet.PNG)
+![ALT](https://github.com/camistolo/TP1/blob/master/Imagenes/Capture2_tickPowerSet.PNG)
 
 Luego de q valida esto, ve si TICKRATE esta entre 1 y 50 (valores validos). Si esta entre 1 y 50, copia el valor de TICKRATE a tickRateMS, una variable volatil del tipo tick_t y luego llama a SysTick_Config.
 
-![ALT](Capture3_llamada_SysTick_Config.PNG)
+![ALT](https://github.com/camistolo/TP1/blob/master/Imagenes/Capture3_llamada_SysTick_Config.PNG)
 
 A SysTick_Config se le pasa una variable tipo uint32_t resultante de multiplicar el SystemCoreClock de la placa por el TICKRATE que se le paso, y luego dividir todo por 1000 (a esta variable en la funcion se la llama "ticks").
 
 Entrando a SysTick_Config, lo primero que hace es validar que ticks-1 sea mayor a SysTic_LOAD_RELOAD_Msk.
 
-![ALT](Capture8_SysTick_LOAD_RELOAD.PNG)
+![ALT](https://github.com/camistolo/TP1/blob/master/Imagenes/Capture8_SysTick_LOAD_RELOAD.PNG)
 
 Luego se ve que se llena SysTick, una estructura definida como ((SysTick_Type* ) SysTick_BASE)
 
-![ALT](Capture4_SysTick_estructura.PNG)
+![ALT](https://github.com/camistolo/TP1/blob/master/Imagenes/Capture4_SysTick_estructura.PNG)
 
 en donde SysTick_Type es una estructura con 4 uint32_t, CTRL, LOAD, VAL y CALIB
 
-![ALT](Capture5_SysTick_Type_estructura.PNG)
+![ALT](https://github.com/camistolo/TP1/blob/master/Imagenes/Capture5_SysTick_Type_estructura.PNG)
 
 y SysTick_BASE es la address.
 
-![ALT](Capture6_SysTick_BASE.PNG)
+![ALT](https://github.com/camistolo/TP1/blob/master/Imagenes/Capture6_SysTick_BASE.PNG)
 
  SysTick_BASE es SCS_BASE + 0x0010UL, una direccion que desconozco.
 
-![ALT](Capture7_SCS_BASE.PNG)
+![ALT](https://github.com/camistolo/TP1/blob/master/Imagenes/Capture7_SCS_BASE.PNG)
 
 Se le carga el LOAD de SysTick como ticks-1, VAL como 0 (es el valor del contador), se setea la prioridad del SysTick_Interrupt mediante la funcion NVIC_SetPriority (ver captura 9)
 
-![ALT](Capture9_NVIC_SetPriority.PNG)
+![ALT](https://github.com/camistolo/TP1/blob/master/Imagenes/Capture9_NVIC_SetPriority.PNG)
 
 y por ultimo se habilita mediante CTRL haciendo una "or" de tres mascaras.
 
@@ -231,11 +231,11 @@ Sale de tickInit con un 1 de satisfactorio.
 
 Volviendo al main de tickHook, luego del tickConfig se llama indefinidamente a tickCallbackSet, la cual se encarga de ejecutar una funcion nombrada myTickHook siempre q haya un interrupt. tickCallbackSet recibe un puntero a funcion de tipo callBackFuncPtr_t, que sera la funcion que querramos ejecutar (myTickHook, explicada despues) y recibe los parametros de la funcion que le pasamos (ver captura 11).
 
-![ALT](Capture11_tickCallbackSet.PNG)
+![ALT](https://github.com/camistolo/TP1/blob/master/Imagenes/Capture11_tickCallbackSet.PNG)
 
 MyTickHook es la funcion definida en tickHook.c y la que la pasamos a tickCallbackSet como puntero a funcion (ver captura 12). Resumiendo, prende y apaga un led q le pasemos.
 
-![ALT](Capture12_myTickHook.PNG)
+![ALT](https://github.com/camistolo/TP1/blob/master/Imagenes/Capture12_myTickHook.PNG)
 
 
 
