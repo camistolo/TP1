@@ -178,7 +178,7 @@ Por medio de la función gpioWrite, se setea la salida respecto al estado de la 
 
 En tickHooks lo primero que se hace es inicializar la placa con boardConfig().
 
-![ALT](https://github.com/camistolo/TP1/blob/master/Imagenes/Capture10_tickInit.PNG?raw=true)
+![ALT](https://github.com/camistolo/TP1/blob/master/Imagenes/Capture10_tickHook_main.PNG)
 
 Luego se llama a tickConfig a la cual se le pasa el parametro TICKRATE_MS. tickConfig es una macro: #define tickConfig tickInit. Por lo tanto cuando se llama a tickConfig en definitiva se esta llamando a tickInit. 
 
