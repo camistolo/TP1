@@ -133,11 +133,7 @@ Luego, se hará la conexión con el repositorio local. Inicialmente, se irá a l
 Esto copiará el repositorio local al que se encuentra en la web.
 
 ### Push y Pull
-Cada vez que se quiera trabajar con el proyecto, se debe copiar el repositorio de la web en el local. La primera vez se deberá clonar el repositorio con la siguiente línea de comando, escrita en el Bash (llamado desde la carpeta del repositorio):
-
-    git clone [url del repositorio]
-
-Luego de esto, y cada vez que se quiera traer el repositorio web al local, se escribirá sólo la siguiente línea:
+Cada vez que se quiera trabajar con el proyecto, se debe copiar el repositorio de la web en el local. Cada vez que se quiera traer el repositorio web al local, se escribirá sólo la siguiente línea:
     
     git pull
 
